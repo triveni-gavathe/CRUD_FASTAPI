@@ -1,0 +1,91 @@
+from fastapi import FastAPI
+from models import Products
+from database import engine,SessionLocal
+from models import Base,Products
+from schemas import Productschema
+app=FastAPI()
+@app.get("/")
+def greet():
+    return "welcome to telusko "
+
+
+product=[
+    Products(
+    id=1,name="Laptop",desc="High performance gaming laptop",price=75999.99
+),
+    Products(
+    id=2,name="Smartphone",desc="5G Android smartphone",price=28999.50
+),
+    Products(
+    id=3,
+    name="Headphones",
+    desc="Wireless noise cancelling headphones",
+    price=4999.00
+),
+
+Products(
+    id=4,
+    name="Smart Watch",
+    desc="Fitness tracking smartwatch",
+    price=7999.75
+),
+
+Products(
+    id=5,
+    name="Keyboard",
+    desc="Mechanical RGB keyboard",
+    price=2499.99
+)
+    
+    
+    
+]
+Base.metadata.create_all(bind=engine)
+db=SessionLocal()
+@app.get("/products/")
+def get_all_products():
+    
+    
+    return product
+@app.get("/product/{id}")
+def get_product_by_id(id:int):
+    for i in product:  #check in the product if 
+        if i.id==id:   #url id with check with product id 
+            return i  #if found it return that id 
+    return "prduct not found"  # if not found retunr not found 
+
+
+@app.post("/product/")
+def add_proudct(data:Products):
+   product.append(data)
+   return product
+ 
+@app.put("/product/{id}/") 
+def update_data(id:int,update_products:Products):
+    for i in range(len(product)):
+        if product[i].id==id:
+            product[i]=update_products
+            return product      
+    return "NO PRODUCT FOUND IT"       
+        
+@app.delete("/product/{id}/")
+def delete_prodcut(id:int):
+    for i in range(len(product)):
+        if product[i].id==id:
+            del product[i]
+            return "PRODUCT DELETED"
+    return "PRODUCT NOT FOUND"
+        
+       
+
+            
+            
+    
+    
+
+ 
+
+        
+    
+    
+    
